@@ -4,7 +4,7 @@ CREATE DATABASE blog_database;
 
 CREATE TABLE posts(
     id PRIMARY KEY,
-    title TEXT, 
-    body TEXT, 
-    image bytea
+    title TEXT NOT NULL, 
+    body TEXT NOT NULL, 
+    image TEXT NOT NULL
 );
