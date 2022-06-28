@@ -9,11 +9,6 @@ The script sql/database.sql will create a database and the single table currentl
 
 Update db.js to match the credentials you choose for your setup.
 
-*1*.../blog$ node server.js
-*2*.../blog/client$ npm run start
-
-serving at localhost:8080
-
 **I will be updating this repo as often as possible**
 
 - Brian - 2022-06-27
