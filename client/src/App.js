@@ -42,7 +42,7 @@ function App() {
 
   useEffect(() => {
     loadPosts();
-  }, [postList])
+  }, [])
 
   const loadPosts = async () => {
     try {
@@ -81,6 +81,7 @@ function App() {
     } catch (err) {
       console.log("server error");
     }
+    loadPosts();
     handleHide();
   }
 
