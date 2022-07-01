@@ -36,6 +36,16 @@ app.get('/post/get', async(req,res) => {
     }
 });
 
+app.delete('/post/delete', async(req,res) => {
+    console.log(await req.body)
+    try{
+        await db.query(`
+        delete from posts where id = ${req.body.id}`);
+    }catch(err){
+
+    }
+});
+
 app.get('/post/getAll', async(req,res) => {
     try{
         const posts = await db.query(`

@@ -1,0 +1,8 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "javascript.preferences.quoteStyle": "auto",
+    "typescript.preferences.quoteStyle": "auto",
+    "prettier.jsxSingleQuote": true
+}
