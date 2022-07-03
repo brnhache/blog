@@ -2,7 +2,8 @@
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
-    "javascript.preferences.quoteStyle": "auto",
-    "typescript.preferences.quoteStyle": "auto",
-    "prettier.jsxSingleQuote": true
+    "javascript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single",
+    "prettier.jsxSingleQuote": true,
+    "prettier.singleQuote": true
 }

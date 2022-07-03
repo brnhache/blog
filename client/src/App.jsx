@@ -5,10 +5,11 @@ import {
   Button,
   Card,
   Container,
-  ListGroup,
   Navbar,
   Modal,
   Form,
+  Row,
+  Col,
 } from 'react-bootstrap';
 
 import React, { useState, useEffect } from 'react';
@@ -17,12 +18,10 @@ import React, { useState, useEffect } from 'react';
  *
  * TODO:
  *
- * tailwind
- * daisycss
  * finish crud operations
  * openvpn
  * pgadmin access remotely in browser
- * separate inline styling (Cards specifically)
+ * open modal on card click, show body, edit/delete buttons
  */
 function readFileAsync(file) {
   return new Promise((resolve, reject) => {
@@ -38,6 +37,14 @@ function readFileAsync(file) {
   });
 }
 
+function chunkArray(arr, size) {
+  const groupedArray = [];
+  for (let i = 0; i < arr.length; i += size) {
+    groupedArray.push(arr.slice(i, i + size));
+  }
+  return groupedArray;
+}
+
 function App() {
   const [showNewPost, setShowNewPost] = useState(false);
   const [postList, setPostList] = useState([]);
@@ -51,7 +58,7 @@ function App() {
       const data = (await (await fetch('/post/getAll')).json()).sort((a, b) => {
         return b.id - a.id;
       });
-      setPostList(data);
+      setPostList(chunkArray(data, 5));
     } catch (err) {
       console.log(err);
     }
@@ -98,13 +105,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Container>
-          <Navbar
-            style={{
-              backgroundColor: '#0f74ac',
-              width: '100%',
-              borderRadius: '.5rem',
-            }}
-          >
+          <Navbar>
             <Container>
               <Navbar.Brand href="#home">This is Blog.</Navbar.Brand>
               <Button onClick={handleShow}>New Post</Button>
@@ -145,29 +146,24 @@ function App() {
               </Form>
             </Modal.Body>
           </Modal>
-          <Container
-            style={{
-              paddingLeft: '5%',
-              paddingRight: '5%',
-              paddingTop: '10px',
-            }}
-          >
-            <ListGroup>
-              {postList.map((post) => (
-                <Card
-                  className="mb-3"
-                  style={{ color: 'black', backgroundColor: '#0f74ac' }}
-                  key={post.id}
-                >
-                  <Card.Img src={post.image} />
-                  <Card.Title className="postTitle">{post.title}</Card.Title>
-                  <Card.Body className="postBody">
-                    <p>{post.body}</p>
-                  </Card.Body>
-                </Card>
-              ))}
-            </ListGroup>
-          </Container>
+          {postList.map((row, idx) => {
+            return (
+              <Row key={idx}>
+                {row.map((post) => {
+                  return (
+                    <Col key={post.id}>
+                      <Card>
+                        <Card.Img className="postImage" src={post.image} />
+                        <Card.Title className="postTitle">
+                          {post.title}
+                        </Card.Title>
+                      </Card>
+                    </Col>
+                  );
+                })}
+              </Row>
+            );
+          })}
         </Container>
       </header>
     </div>

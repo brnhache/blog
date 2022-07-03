@@ -33,12 +33,30 @@
   font-size: large;
 }
 
+.navbar {
+  background-color: #0f74ac;
+  width: 100%;
+  border-radius: 0.5rem;
+}
+
+.card {
+  margin-top: 10px;
+}
+
 .postTitle {
-  font-size: large;
+  color: black;
+  background-color: #0f74ac;
+  margin-bottom: 0rem !important;
+  padding-bottom: 0.5rem;
 }
 
 .postBody {
   font-size: medium;
+}
+
+.postImage {
+  height: 15vw;
+  object-fit: cover;
 }
 
 @keyframes App-logo-spin {
@@ -50,7 +68,7 @@
   }
 }
 
-.btn{
+.btn {
   outline: none !important;
   box-shadow: none !important;
 }
