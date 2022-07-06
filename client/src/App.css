@@ -43,6 +43,12 @@
   margin-top: 10px;
 }
 
+.editPostHeader {
+  align-content: center;
+  font-size: xx-large;
+  font-weight: 500;
+}
+
 .postTitle {
   color: black;
   background-color: #0f74ac;
@@ -59,6 +65,11 @@
   object-fit: cover;
 }
 
+.btn {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -66,9 +77,4 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-.btn {
-  outline: none !important;
-  box-shadow: none !important;
 }

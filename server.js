@@ -7,8 +7,8 @@ const path = require('path');
 const image_dir = path.join('/home/ubuntu/projects/blog/images', 'public');
 app.use(express.static(image_dir));
 
-app.use(express.json({limit: '25mb'}));
-app.use(express.urlencoded({limit: '25mb', extended: true, parameterLimit: 50000}));
+app.use(express.json({ limit: '25mb' }));
+app.use(express.urlencoded({ limit: '25mb', extended: true, parameterLimit: 50000 }));
 app.use(express.json());
 
 //Routes
@@ -28,53 +28,54 @@ app.get('/', (req, res) => {
     res.send("Home Page");
 });
 
-app.get('/post/get', async(req,res) => {
-    try{
+app.get('/post/get', async (req, res) => {
+    try {
         console.log("Get Post");
-    }catch(err){
+    } catch (err) {
         console.log(err);
     }
 });
 
-app.delete('/post/delete', async(req,res) => {
-    console.log(await req.body)
-    try{
+app.delete('/post/delete', async (req, res) => {
+    console.log(await req.body);
+    try {
         await db.query(`
         delete from posts where id = ${req.body.id}`);
-    }catch(err){
+    } catch (err) {
 
     }
 });
 
-app.get('/post/getAll', async(req,res) => {
-    try{
+app.get('/post/getAll', async (req, res) => {
+    console.log("hello");
+    try {
         const posts = await db.query(`
             select * from posts;
         `);
         res.status(200).send(posts.rows);
-    }catch(err){
+    } catch (err) {
         console.log(err);
     }
 });
 
-app.post('/post/create', async(req,res) => {
-    try{
+app.post('/post/create', async (req, res) => {
+    try {
         const data = await req.body;
         const { title, body, image } = data;
         await db.query(`
             insert into posts (title, body, image) values (
                 $1,
                 $2,
-                $3    
+                $3
             );
-        `, [title,body,image]);
-        console.log("posted?")
+        `, [title, body, image]);
+        console.log("posted?");
         res.status(200).send("Post created!");
-    }catch(err){
+    } catch (err) {
         res.status(500).send("Something went wrong. Post NOT created.");
         console.log(err);
     }
-})
+});
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}.`);

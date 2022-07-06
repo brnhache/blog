@@ -13,6 +13,7 @@ import {
 } from 'react-bootstrap';
 
 import React, { useState, useEffect } from 'react';
+import { EditPostModal } from './components/edit_post_modal/EditPostModal';
 
 /**
  *
@@ -22,6 +23,7 @@ import React, { useState, useEffect } from 'react';
  * openvpn
  * pgadmin access remotely in browser
  * open modal on card click, show body, edit/delete buttons
+ * Need that toast!
  */
 function readFileAsync(file) {
   return new Promise((resolve, reject) => {
@@ -47,6 +49,8 @@ function chunkArray(arr, size) {
 
 function App() {
   const [showNewPost, setShowNewPost] = useState(false);
+  const [showEditPost, setShowEditPost] = useState(false);
+  const [selectedPost, setSelectedPost] = useState({});
   const [postList, setPostList] = useState([]);
 
   useEffect(() => {
@@ -60,7 +64,7 @@ function App() {
       });
       setPostList(chunkArray(data, 5));
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -95,11 +99,17 @@ function App() {
       console.log('server error');
     }
     loadPosts();
-    handleHide();
+    handleHideNewPost();
   };
 
-  const handleShow = () => setShowNewPost(true);
-  const handleHide = () => setShowNewPost(false);
+  const handleShowNewPost = () => setShowNewPost(true);
+  const handleHideNewPost = () => setShowNewPost(false);
+
+  const handleShowEditPost = (post) => {
+    setSelectedPost(post);
+    setShowEditPost(true);
+  };
+  const handleHideEditPost = () => setShowEditPost(false);
 
   return (
     <div className="App">
@@ -108,7 +118,9 @@ function App() {
           <Navbar>
             <Container>
               <Navbar.Brand href="#home">This is Blog.</Navbar.Brand>
-              <Button onClick={handleShow}>New Post</Button>
+              <Button onClick={handleShowNewPost} variant="success">
+                New Post
+              </Button>
               <Navbar.Collapse className="justify-content-end">
                 <Navbar.Text>
                   Signed in as: <a href="#login">Mark Otto</a>
@@ -118,7 +130,16 @@ function App() {
           </Navbar>
         </Container>
         <Container>
-          <Modal show={showNewPost} onHide={handleHide} backdrop="static">
+          <EditPostModal
+            showEditPost={showEditPost}
+            handleHideEditPost={handleHideEditPost}
+            selectedPost={selectedPost}
+          />
+          <Modal
+            show={showNewPost}
+            onHide={handleHideNewPost}
+            backdrop="static"
+          >
             <Modal.Header closeButton={true}>
               <Modal.Title>Create Post</Modal.Title>
             </Modal.Header>
@@ -152,7 +173,7 @@ function App() {
                 {row.map((post) => {
                   return (
                     <Col key={post.id}>
-                      <Card>
+                      <Card onClick={() => handleShowEditPost(post)}>
                         <Card.Img className="postImage" src={post.image} />
                         <Card.Title className="postTitle">
                           {post.title}

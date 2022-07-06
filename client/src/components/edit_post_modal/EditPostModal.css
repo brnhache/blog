@@ -1,0 +1,12 @@
+.saveButton {
+  background-color: green;
+}
+
+.closeButton {
+  background-color: red;
+}
+
+.btn {
+  outline: none !important;
+  box-shadow: none !important;
+}
