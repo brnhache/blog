@@ -1,19 +1,11 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import {
-  Button,
-  Card,
-  Container,
-  Navbar,
-  Modal,
-  Form,
-  Row,
-  Col,
-} from 'react-bootstrap';
+import { Button, Card, Container, Navbar, Row, Col } from 'react-bootstrap';
 
 import React, { useState, useEffect } from 'react';
 import { EditPostModal } from './components/edit_post_modal/EditPostModal';
+import { AddPostModal } from './components/add_post_modal/AddPostModal';
 
 /**
  *
@@ -48,7 +40,7 @@ function chunkArray(arr, size) {
 }
 
 function App() {
-  const [showNewPost, setShowNewPost] = useState(false);
+  const [showAddPost, setShowAddPost] = useState(false);
   const [showEditPost, setShowEditPost] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
   const [postList, setPostList] = useState([]);
@@ -99,11 +91,11 @@ function App() {
       console.log('server error');
     }
     loadPosts();
-    handleHideNewPost();
+    handleHideAddPost();
   };
 
-  const handleShowNewPost = () => setShowNewPost(true);
-  const handleHideNewPost = () => setShowNewPost(false);
+  const handleShowAddPost = () => setShowAddPost(true);
+  const handleHideAddPost = () => setShowAddPost(false);
 
   const handleShowEditPost = (post) => {
     setSelectedPost(post);
@@ -118,7 +110,7 @@ function App() {
           <Navbar>
             <Container>
               <Navbar.Brand href="#home">This is Blog.</Navbar.Brand>
-              <Button onClick={handleShowNewPost} variant="success">
+              <Button onClick={handleShowAddPost} variant="success">
                 New Post
               </Button>
               <Navbar.Collapse className="justify-content-end">
@@ -135,38 +127,11 @@ function App() {
             handleHideEditPost={handleHideEditPost}
             selectedPost={selectedPost}
           />
-          <Modal
-            show={showNewPost}
-            onHide={handleHideNewPost}
-            backdrop="static"
-          >
-            <Modal.Header closeButton={true}>
-              <Modal.Title>Create Post</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form onSubmit={handleAddPost}>
-                <Form.Label className="newPostFormLabel">Title</Form.Label>
-                <Form.Control
-                  className="mb-3"
-                  type="text"
-                  name="newPostTitle"
-                />
-                <Form.Label className="newPostFormLabel">Body</Form.Label>
-                <Form.Control
-                  className="mb-3"
-                  as="textarea"
-                  name="newPostBody"
-                />
-                <Form.Label className="newPostFormLabel">Image</Form.Label>
-                <Form.Control
-                  className="mb-3"
-                  type="file"
-                  name="newPostImage"
-                />
-                <Button type="submit">Submit</Button>
-              </Form>
-            </Modal.Body>
-          </Modal>
+          <AddPostModal
+            showAddPost={showAddPost}
+            handleHideAddPost={handleHideAddPost}
+            handleAddPost={handleAddPost}
+          />
           {postList.map((row, idx) => {
             return (
               <Row key={idx}>

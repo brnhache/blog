@@ -47,7 +47,6 @@ app.delete('/post/delete', async (req, res) => {
 });
 
 app.get('/post/getAll', async (req, res) => {
-    console.log("hello");
     try {
         const posts = await db.query(`
             select * from posts;
@@ -69,7 +68,6 @@ app.post('/post/create', async (req, res) => {
                 $3
             );
         `, [title, body, image]);
-        console.log("posted?");
         res.status(200).send("Post created!");
     } catch (err) {
         res.status(500).send("Something went wrong. Post NOT created.");
