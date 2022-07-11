@@ -101,7 +101,10 @@ function App() {
     setSelectedPost(post);
     setShowEditPost(true);
   };
-  const handleHideEditPost = () => setShowEditPost(false);
+  const handleHideEditPost = () => {
+    loadPosts();
+    setShowEditPost(false);
+  };
 
   return (
     <div className="App">

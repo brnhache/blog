@@ -37,12 +37,12 @@ app.get('/post/get', async (req, res) => {
 });
 
 app.delete('/post/delete', async (req, res) => {
-    console.log(await req.body);
     try {
-        await db.query(`
-        delete from posts where id = ${req.body.id}`);
+        const success = await db.query(`
+        delete from posts where id = ${req.body.post_id}`);
+        res.send(success);
     } catch (err) {
-
+        console.error(err);
     }
 });
 
@@ -53,7 +53,7 @@ app.get('/post/getAll', async (req, res) => {
         `);
         res.status(200).send(posts.rows);
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 });
 
