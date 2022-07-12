@@ -2,6 +2,8 @@ import './EditPostModal.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Modal, Image, Button, ButtonGroup } from 'react-bootstrap';
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css';
 
 import React from 'react';
 
@@ -17,6 +19,9 @@ import React from 'react';
 //   }catch(err)
 // }
 
+/**Notyf toast baby */
+const notyf = new Notyf();
+
 export function EditPostModal(props) {
   const { selectedPost, showEditPost, handleHideEditPost } = props;
 
@@ -31,9 +36,10 @@ export function EditPostModal(props) {
         headers: { 'content-type': 'application/json' },
       });
       if (res.ok) {
-        console.log('YEAH BOI BYEBYE POST, AAAAND TOAST ME');
+        notyf.success('Post Successfully Deleted');
       }
     } catch (err) {
+      notyf.error('Oops! Something went wrong. Post not deleted.');
       console.error(err);
     }
     handleHideEditPost();

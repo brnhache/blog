@@ -2,6 +2,8 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Button, Card, Container, Navbar, Row, Col } from 'react-bootstrap';
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css';
 
 import React, { useState, useEffect } from 'react';
 import { EditPostModal } from './components/edit_post_modal/EditPostModal';
@@ -15,8 +17,11 @@ import { AddPostModal } from './components/add_post_modal/AddPostModal';
  * openvpn
  * pgadmin access remotely in browser
  * open modal on card click, show body, edit/delete buttons
- * Need that toast!
  */
+
+/**This is my notyf object with all its toasty methods */
+const notyf = new Notyf();
+
 function readFileAsync(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -60,10 +65,11 @@ function App() {
     }
   };
 
+  /**This special function adds a blog post to the db! */
   const handleAddPost = async (event) => {
     event.preventDefault();
     if (!event.target.newPostTitle.value || !event.target.newPostBody.value) {
-      console.log('invalid form, pop ze toast');
+      notyf.error('Hey man, you gotta fill out the form!');
       return;
     }
     try {
@@ -85,7 +91,7 @@ function App() {
         headers: { 'content-type': 'application/json' },
       });
       if (res.ok) {
-        console.log('post created! put up a toast!');
+        notyf.success('Post Created!');
       }
     } catch (err) {
       console.log('server error');
