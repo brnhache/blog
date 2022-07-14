@@ -53,7 +53,7 @@ export function EditPostModal(props) {
       <Image src={selectedPost.image} />
       <Modal.Body>{selectedPost?.body}</Modal.Body>
       <ButtonGroup>
-        <Button variant="success">Save</Button>
+        <Button variant="success">Edit</Button>
         <Button variant="danger" onClick={() => deletePost(selectedPost)}>
           Delete
         </Button>
