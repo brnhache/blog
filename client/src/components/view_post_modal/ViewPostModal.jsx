@@ -1,29 +1,20 @@
-import './EditPostModal.css';
+import './ViewPostModal.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Modal, Image, Button, ButtonGroup } from 'react-bootstrap';
+import { SavePostModal } from '../save_post_modal/SavePostModal';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 
-import React from 'react';
-
-// function updatePost(post){
-//   try{
-//     let res = await(await fetch('/api/updatePost', {
-//       method: "PUT",
-//       headers: {"return_type": "application/json"},
-//       body: {
-
-//       }
-//     }))
-//   }catch(err)
-// }
+import React, { useState } from 'react';
 
 /**Notyf toast baby */
 const notyf = new Notyf();
 
-export function EditPostModal(props) {
-  const { selectedPost, showEditPost, handleHideEditPost } = props;
+export function ViewPostModal(props) {
+  const { selectedPost, showViewPost, handleHideViewPost } = props;
+  const [showSavePost, setShowSavePost] = useState(false);
+  const handleHideSavePost = () => setShowSavePost(false);
 
   //Does it matter about passing the entire post? Or should it always just be the ID?
   const deletePost = async (post) => {
@@ -42,22 +33,29 @@ export function EditPostModal(props) {
       notyf.error('Oops! Something went wrong. Post not deleted.');
       console.error(err);
     }
-    handleHideEditPost();
+    handleHideViewPost();
   };
 
   return (
-    <Modal backdrop="static" show={showEditPost} onHide={handleHideEditPost}>
-      <Modal.Header className={'editPostHeader d-block text-center'}>
+    <Modal backdrop="static" show={showViewPost} onHide={handleHideViewPost}>
+      <SavePostModal
+        showSavePost={showSavePost}
+        handleHideSavePost={handleHideSavePost}
+        selectedPost={selectedPost}
+      />
+      <Modal.Header className={'viewPostHeader d-block text-center'}>
         {selectedPost?.title}
       </Modal.Header>
       <Image src={selectedPost.image} />
       <Modal.Body>{selectedPost?.body}</Modal.Body>
       <ButtonGroup>
-        <Button variant="success">Edit</Button>
+        <Button variant="success" onClick={() => setShowSavePost(true)}>
+          Edit
+        </Button>
         <Button variant="danger" onClick={() => deletePost(selectedPost)}>
           Delete
         </Button>
-        <Button variant="secondary" onClick={handleHideEditPost}>
+        <Button variant="secondary" onClick={handleHideViewPost}>
           Close
         </Button>
       </ButtonGroup>

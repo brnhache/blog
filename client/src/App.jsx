@@ -2,39 +2,35 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Button, Card, Container, Navbar, Row, Col } from 'react-bootstrap';
-import { Notyf } from 'notyf';
-import 'notyf/notyf.min.css';
 
 import React, { useState, useEffect } from 'react';
-import { EditPostModal } from './components/edit_post_modal/EditPostModal';
-import { AddPostModal } from './components/add_post_modal/AddPostModal';
+import { ViewPostModal } from './components/view_post_modal/ViewPostModal';
+import { SavePostModal } from './components/save_post_modal/SavePostModal';
 
 /**
  *
  * TODO:
+ * NUMERO UNO: bring this todo list into the git project manager, can we prioritize tasks?
  *
- * finish crud operations
- * openvpn
+ * Combine the add/edit functions ✅
+ * ...Separate the add/edit functions? Kinda hard to read
+ *
+ *
+ * finish crud operations ✅ (pretty much)
+ *
  * pgadmin access remotely in browser
- * open modal on card click, show body, edit/delete buttons
+ * concentrate on refactoring for best practice
+ * comments!!!!
+ * handle errors better!
+ * log file? :D
+ * better Styles!
+ * more functionality!
+ *
+ * time to deploy on the pi!
+ * openvpn?
+ *
+ *
  */
-
-/**This is my notyf object with all its toasty methods */
-const notyf = new Notyf();
-
-function readFileAsync(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      resolve(reader.result);
-    };
-
-    reader.onerror = reject;
-
-    reader.readAsDataURL(file);
-  });
-}
 
 function chunkArray(arr, size) {
   const groupedArray = [];
@@ -45,8 +41,8 @@ function chunkArray(arr, size) {
 }
 
 function App() {
-  const [showAddPost, setShowAddPost] = useState(false);
-  const [showEditPost, setShowEditPost] = useState(false);
+  const [showSavePost, setShowSavePost] = useState(false);
+  const [showViewPost, setShowViewPost] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
   const [postList, setPostList] = useState([]);
 
@@ -65,51 +61,19 @@ function App() {
     }
   };
 
-  /**This special function adds a blog post to the db! */
-  const handleAddPost = async (event) => {
-    event.preventDefault();
-    if (!event.target.newPostTitle.value || !event.target.newPostBody.value) {
-      notyf.error('Hey man, you gotta fill out the form!');
-      return;
-    }
-    try {
-      const newImage = event.target.newPostImage.files[0];
-      let newImageBase64 = false;
-      if (newImage) {
-        newImageBase64 = await readFileAsync(newImage);
-      }
-      const newPost = {
-        title: event.target.newPostTitle.value,
-        body: event.target.newPostBody.value,
-        image: newImageBase64
-          ? newImageBase64
-          : 'https://picsum.photos/400/150',
-      };
-      const res = await fetch('/post/create', {
-        method: 'POST',
-        body: JSON.stringify(newPost),
-        headers: { 'content-type': 'application/json' },
-      });
-      if (res.ok) {
-        notyf.success('Post Created!');
-      }
-    } catch (err) {
-      console.log('server error');
-    }
+  const handleShowSavePost = () => setShowSavePost(true);
+  const handleHideSavePost = () => {
     loadPosts();
-    handleHideAddPost();
+    setShowSavePost(false);
   };
 
-  const handleShowAddPost = () => setShowAddPost(true);
-  const handleHideAddPost = () => setShowAddPost(false);
-
-  const handleShowEditPost = (post) => {
+  const handleShowViewPost = (post) => {
     setSelectedPost(post);
-    setShowEditPost(true);
+    setShowViewPost(true);
   };
-  const handleHideEditPost = () => {
+  const handleHideViewPost = () => {
     loadPosts();
-    setShowEditPost(false);
+    setShowViewPost(false);
   };
 
   return (
@@ -119,7 +83,7 @@ function App() {
           <Navbar>
             <Container>
               <Navbar.Brand href="#home">This is Blog.</Navbar.Brand>
-              <Button onClick={handleShowAddPost} variant="success">
+              <Button onClick={handleShowSavePost} variant="success">
                 New Post
               </Button>
               <Navbar.Collapse className="justify-content-end">
@@ -131,15 +95,15 @@ function App() {
           </Navbar>
         </Container>
         <Container>
-          <EditPostModal
-            showEditPost={showEditPost}
-            handleHideEditPost={handleHideEditPost}
+          <ViewPostModal
+            showViewPost={showViewPost}
+            handleHideViewPost={handleHideViewPost}
             selectedPost={selectedPost}
           />
-          <AddPostModal
-            showAddPost={showAddPost}
-            handleHideAddPost={handleHideAddPost}
-            handleAddPost={handleAddPost}
+          <SavePostModal
+            showSavePost={showSavePost}
+            handleHideSavePost={handleHideSavePost}
+            selectedPost={false}
           />
           {postList.map((row, idx) => {
             return (
@@ -147,7 +111,7 @@ function App() {
                 {row.map((post) => {
                   return (
                     <Col key={post.id}>
-                      <Card onClick={() => handleShowEditPost(post)}>
+                      <Card onClick={() => handleShowViewPost(post)}>
                         <Card.Img className="postImage" src={post.image} />
                         <Card.Title className="postTitle">
                           {post.title}
