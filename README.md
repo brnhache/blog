@@ -1,8 +1,6 @@
 # blog
 PERN stack project being deployed on a Raspberry Pi 4 running Ubuntu Server 20.04 :D
 
-This is a brand new project that I'm uploading here as material for my portfolio.
-
 A local PostgreSQL service must be active on the machine you wish to execute this project on.
 
 The script sql/database.sql will create a database and the single table currently required.
