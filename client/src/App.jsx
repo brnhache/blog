@@ -9,29 +9,10 @@ import { SavePostModal } from './components/save_post_modal/SavePostModal';
 
 /**
  *
- * TODO:
- * NUMERO UNO: bring this todo list into the git project manager, can we prioritize tasks?
- *
- * Combine the add/edit functions ✅
- * ...Separate the add/edit functions? Kinda hard to read
- *
- *
- * finish crud operations ✅ (pretty much)
- *
- * pgadmin access remotely in browser
- * concentrate on refactoring for best practice
- * comments!!!!
- * handle errors better!
- * log file? :D
- * better Styles!
- * more functionality!
- *
- * time to deploy on the pi!
- * openvpn?
- *
- *
+ * @param {*} arr
+ * @param {*} size
+ * @returns 2d array for displaying posts in a grid
  */
-
 function chunkArray(arr, size) {
   const groupedArray = [];
   for (let i = 0; i < arr.length; i += size) {
@@ -40,6 +21,10 @@ function chunkArray(arr, size) {
   return groupedArray;
 }
 
+/**
+ *
+ * @returns Main entry point to This is Blog
+ */
 function App() {
   const [showSavePost, setShowSavePost] = useState(false);
   const [showViewPost, setShowViewPost] = useState(false);
