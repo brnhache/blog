@@ -79,7 +79,12 @@ export function SavePostModal(props) {
   };
 
   return (
-    <Modal show={showSavePost} onHide={handleHideSavePost} backdrop="static">
+    <Modal
+      fullscreen={true}
+      show={showSavePost}
+      onHide={handleHideSavePost}
+      backdrop="static"
+    >
       <Modal.Header closeButton={true}>
         <Modal.Title>{action} Post</Modal.Title>
       </Modal.Header>

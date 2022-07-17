@@ -1,7 +1,7 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Button, Card, Container, Navbar, Row, Col } from 'react-bootstrap';
+import { Button, Card, Navbar, Row, Col } from 'react-bootstrap';
 
 import React, { useState, useEffect } from 'react';
 import { ViewPostModal } from './components/view_post_modal/ViewPostModal';
@@ -56,60 +56,57 @@ function App() {
     setSelectedPost(post);
     setShowViewPost(true);
   };
+
   const handleHideViewPost = () => {
     loadPosts();
     setShowViewPost(false);
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <Container>
-          <Navbar>
-            <Container>
-              <Navbar.Brand href="#home">This is Blog.</Navbar.Brand>
-              <Button onClick={handleShowSavePost} variant="success">
-                New Post
-              </Button>
-              <Navbar.Collapse className="justify-content-end">
-                <Navbar.Text>
-                  Signed in as: <a href="#login">Mark Otto</a>
-                </Navbar.Text>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
-        </Container>
-        <Container>
-          <ViewPostModal
-            showViewPost={showViewPost}
-            handleHideViewPost={handleHideViewPost}
-            selectedPost={selectedPost}
-          />
-          <SavePostModal
-            showSavePost={showSavePost}
-            handleHideSavePost={handleHideSavePost}
-            selectedPost={false}
-          />
-          {postList.map((row, idx) => {
-            return (
-              <Row key={idx}>
-                {row.map((post) => {
-                  return (
-                    <Col key={post.id}>
-                      <Card onClick={() => handleShowViewPost(post)}>
-                        <Card.Img className="postImage" src={post.image} />
-                        <Card.Title className="postTitle">
-                          {post.title}
-                        </Card.Title>
-                      </Card>
-                    </Col>
-                  );
-                })}
-              </Row>
-            );
-          })}
-        </Container>
-      </header>
+    <div className="App-main">
+      <Navbar fixed="top" style={{ margin: '5px' }}>
+        <Navbar.Brand className="navbarTitle" href="#home">
+          This is Blog.
+        </Navbar.Brand>
+        <Button onClick={handleShowSavePost} variant="success">
+          New Post
+        </Button>
+        <Navbar.Collapse className="justify-content-end">
+          <Navbar.Text className="navbarText">
+            Signed in as: <a href="#login">Mark Otto</a>
+          </Navbar.Text>
+        </Navbar.Collapse>
+      </Navbar>
+      <ViewPostModal
+        showViewPost={showViewPost}
+        handleHideViewPost={handleHideViewPost}
+        selectedPost={selectedPost}
+      />
+      <SavePostModal
+        showSavePost={showSavePost}
+        handleHideSavePost={handleHideSavePost}
+        selectedPost={false}
+      />
+      <div className="postListArea">
+        {postList.map((row, idx) => {
+          return (
+            <Row key={idx}>
+              {row.map((post) => {
+                return (
+                  <Col key={post.id}>
+                    <Card onClick={() => handleShowViewPost(post)}>
+                      <Card.Img className="postImage" src={post.image} />
+                      <Card.Title className="postTitle">
+                        {post.title}
+                      </Card.Title>
+                    </Card>
+                  </Col>
+                );
+              })}
+            </Row>
+          );
+        })}
+      </div>
     </div>
   );
 }

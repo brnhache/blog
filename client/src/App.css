@@ -1,7 +1,3 @@
-.App {
-  text-align: center;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -13,29 +9,39 @@
   }
 }
 
-.App-header {
+.App-main {
   background-color: #ac470f;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  display: block;
+  height: 100vh;
 }
 
 .App-link {
   color: #61dafb;
 }
 
+.postListArea {
+  margin-left: 10px;
+}
+
 .navbar {
   background-color: #0f74ac;
-  width: 100%;
+  width: 95vw;
   border-radius: 0.5rem;
+  font-size: calc(10px + 2vmin);
+  margin-left: 1vw;
+}
+
+.navbarTitle {
+  margin-left: 1vw;
+}
+
+.navbarText {
+  margin-right: 1vw;
 }
 
 .card {
-  margin-top: 10px;
+  margin-top: 10vmin;
+  width: 40vmin;
 }
 
 .viewPostHeader {
@@ -48,7 +54,8 @@
   color: black;
   background-color: #0f74ac;
   margin-bottom: 0rem !important;
-  padding-bottom: 0.5rem;
+  padding: 0.5vmin;
+  text-align: center;
 }
 
 .postBody {
@@ -63,6 +70,11 @@
 .btn {
   outline: none !important;
   box-shadow: none !important;
+}
+
+.row {
+  padding-left: 10vmin;
+  padding-right: 10vmin;
 }
 
 @keyframes App-logo-spin {
