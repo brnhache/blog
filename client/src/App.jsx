@@ -6,20 +6,7 @@ import { Button, Card, Navbar, Row, Col } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import { ViewPostModal } from './components/view_post_modal/ViewPostModal';
 import { SavePostModal } from './components/save_post_modal/SavePostModal';
-
-/**
- *
- * @param {*} arr
- * @param {*} size
- * @returns 2d array for displaying posts in a grid
- */
-function chunkArray(arr, size) {
-  const groupedArray = [];
-  for (let i = 0; i < arr.length; i += size) {
-    groupedArray.push(arr.slice(i, i + size));
-  }
-  return groupedArray;
-}
+import { handleFetch, chunkArray } from './utils';
 
 /**
  *
@@ -37,7 +24,7 @@ function App() {
 
   const loadPosts = async () => {
     try {
-      const data = (await (await fetch('/post/getAll')).json()).sort((a, b) => {
+      const data = await handleFetch('/post/getAll').sort((a, b) => {
         return b.id - a.id;
       });
       setPostList(chunkArray(data, 5));

@@ -29,7 +29,11 @@ export function SavePostModal(props) {
   const { showSavePost, handleHideSavePost, selectedPost } = props;
   const action = selectedPost ? 'Edit' : 'Create';
 
-  // Get the data from the form and pass it to the backend
+  /**
+   * send updated post/new post
+   * @param {*} event
+   * @returns null
+   */
   const handleSavePost = async (event) => {
     event.preventDefault();
     if (!event.target.newPostTitle.value || !event.target.newPostBody.value) {
@@ -45,7 +49,7 @@ export function SavePostModal(props) {
         newImageBase64 = selectedPost.image;
       }
 
-      //At this point...should they just be separated? :(
+      //The body only requires the id if we are in edit mode and have a post selected
       const body = selectedPost
         ? {
             title: event.target.newPostTitle.value,
