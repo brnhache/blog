@@ -10,28 +10,26 @@ import { Notyf } from 'notyf';
  * successMessage: optional message for success toast
  * @returns
  */
-export const handleFetch = async (options) => {
+export const useFetch = async (options) => {
     const [data, setData] = useState(null);
     const notyf = new Notyf();
     useEffect(() => {
-        const fetchData = async (_options) => {
-            try {
-                if (_options.url) {
-                    const res = _options.body
-                        ? await fetch(_options.url, _options.body)
-                        : await fetch(_options.url);
-                    setData(await res.json());
+        try {
+            if (options.url) {
+                if (options.body) {
+                    fetch(options.url, options.body).then(res => res.json()).then(data => setData(data));
                 } else {
-                    throw new Error('no url provided to useFetch');
+                    fetch(options.url).then(res => res.json()).then(data => setData(data));
                 }
-            } catch (err) {
-                if (_options.errorMessage) {
-                    notyf.error(_options.errorMessage);
-                }
-                console.error(err.message);
+            } else {
+                throw new Error('no url provided to useFetch');
             }
-        };
-        fetchData(options);
+        } catch (err) {
+            if (options.errorMessage) {
+                notyf.error(options.errorMessage);
+            }
+            console.error(err.message);
+        }
     }, [options.url]);
 
     return data;
