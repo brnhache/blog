@@ -10,12 +10,15 @@ import { Notyf } from 'notyf';
  * successMessage: optional message for success toast
  * @returns
  */
-export const useFetch = async (options) => {
+export const useFetch = (options) => {
+    console.log("useFetch fire");
+    console.log("options...", options);
     const [data, setData] = useState(null);
     const notyf = new Notyf();
     useEffect(() => {
         try {
             if (options.url) {
+                console.log("if options.url...");
                 if (options.body) {
                     fetch(options.url, options.body).then(res => res.json()).then(data => setData(data));
                 } else {
@@ -31,8 +34,8 @@ export const useFetch = async (options) => {
             console.error(err.message);
         }
     }, [options.url]);
-
-    return data;
+    console.log("data in useFetch", data);
+    return { data };
 };
 
 /**

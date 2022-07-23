@@ -6,7 +6,7 @@ import { Button, Card, Navbar, Row, Col } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import { ViewPostModal } from './components/view_post_modal/ViewPostModal';
 import { SavePostModal } from './components/save_post_modal/SavePostModal';
-import { useFetch, chunkArray } from './utils';
+import {useFetch, chunkArray} from './utils';
 
 /**
  *
@@ -17,6 +17,8 @@ function App() {
   const [showViewPost, setShowViewPost] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
   const [postList, setPostList] = useState([]);
+  const [url, setUrl] = useState(null);
+  const {data} = useFetch({url});
 
   useEffect(() => {
     loadPosts();
@@ -24,10 +26,14 @@ function App() {
 
   const loadPosts = async () => {
     try {
-      const data = await useFetch('/post/getAll').sort((a, b) => {
-        return b.id - a.id;
-      });
-      setPostList(chunkArray(data, 5));
+      setUrl('/post/getAll');
+      console.log("data in app",data);
+      if(data){
+        data.sort((a, b) => {
+          return b.id - a.id;
+        });
+        setPostList(chunkArray(data, 5));
+      }
     } catch (err) {
       console.error(err);
     }
