@@ -1,5 +1,5 @@
 CREATE DATABASE blog_database;
-
+CREATE EXTENSION pgcrypto; --Enable pgcrypto which activates crypt() and bcrypt in postgresql <Usage https://www.postgresql.org/docs/current/pgcrypto.html>
 -- \c blog_database
 --modifying psql from command line:
 --
