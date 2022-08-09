@@ -1,4 +1,4 @@
-/** @type {import('prettier').Config} */
-module.exports = {
-    singleQuote: true,
-};
+// /** @type {import('prettier').Config} */
+// module.exports = {
+//     singleQuote: true,
+// };
