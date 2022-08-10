@@ -67,6 +67,16 @@
   object-fit: cover;
 }
 
+.placeholderText {
+  padding-top: 10vmin;
+  font-weight: 600;
+  font-size: xx-large;
+}
+
+.placeholderContainer {
+  text-align: center;
+}
+
 .btn {
   outline: none !important;
   box-shadow: none !important;

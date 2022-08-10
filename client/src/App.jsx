@@ -6,6 +6,7 @@ import { Button, Card, Navbar, Row, Col } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import { ViewPostModal } from './components/view_post_modal/ViewPostModal';
 import { SavePostModal } from './components/save_post_modal/SavePostModal';
+import { LoginModal } from './components/login_modal/LoginModal';
 
 /**
  *
@@ -28,6 +29,7 @@ function chunkArray(arr, size) {
 function App() {
   const [showSavePost, setShowSavePost] = useState(false);
   const [showViewPost, setShowViewPost] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
   const [postList, setPostList] = useState([]);
 
@@ -62,6 +64,14 @@ function App() {
     setShowViewPost(false);
   };
 
+  const handleShowLogin = () => {
+    setShowLogin(true);
+  };
+
+  const handleHideLogin = () => {
+    setShowLogin(false);
+  };
+
   return (
     <div className="App-main">
       <Navbar fixed="top" style={{ margin: '5px' }}>
@@ -73,7 +83,7 @@ function App() {
         </Button>
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text className="navbarText">
-            Signed in as: <a href="#login">Mark Otto</a>
+            <Button variant="dark" onClick={handleShowLogin}>Login</Button>
           </Navbar.Text>
         </Navbar.Collapse>
       </Navbar>
@@ -87,7 +97,14 @@ function App() {
         handleHideSavePost={handleHideSavePost}
         selectedPost={false}
       />
+      <LoginModal
+        showLogin={showLogin}
+        handleHideLogin={handleHideLogin}
+      />
       <div className="postListArea">
+        {postList.length < 1 && (
+          <div className="placeholderContainer"> <p className="placeholderText">Nothing to see here!</p> </div>
+        )}
         {postList.map((row, idx) => {
           return (
             <Row key={idx}>

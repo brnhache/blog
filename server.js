@@ -93,8 +93,10 @@ app.post('/users/create', async (req, res) => {
     }
 });
 
-//Should this just be /login?
-app.get('/users/authenticate', async (req, res) => {
+/**
+ *
+ */
+app.post('/users/login', async (req, res) => {
     try {
         const data = await req.body;
         const { username, password } = data;
