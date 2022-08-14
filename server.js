@@ -96,16 +96,26 @@ app.post('/users/create', async (req, res) => {
 /**
  *
  */
-app.post('/users/login', async (req, res) => {
+app.get('/users/login', async (req, res) => {
     try {
-        const data = await req.body;
+        const data = req.query;
         const { username, password } = data;
-        const pwhash = await db.query(`select password from users where username = $1`, [username]);
-        const result = (await db.query(`select ($3 = crypt($2, $3)) as pwmatch from users where username = $1`, [username, password, pwhash])).rows[0].pwmatch;
-        if (result) {
-            res.status(200).send("User authenticated!");
+        const pwhash_result = await db.query(`select password from users where username = $1`, [username]);
+        const pwhash = pwhash_result.rows.length ? pwhash_result.rows[0].password : false;
+        if (!pwhash) {
+            res.status(401).send("Credentials not correct. User NOT authenticated.");
+            return;
+        }
+        const result = (await db.query(`select ($3 = crypt($2, $3)) as pwmatch from users where username = $1`, [username, password, pwhash]));
+        const authenticated = result.rows[0].pwmatch;
+        if (authenticated) {
+            try {
+                res.status(200).send("User authenticated!");
+            } catch (err) {
+                console.log(err);
+            }
         } else {
-            res.status(200).send("Credentials not correct. User NOT authenticated.");
+            res.status(401).send("Credentials not correct. User NOT authenticated.");
         }
     } catch (err) {
         res.status(500).send("Something went wrong. User NOT authenticated.");
