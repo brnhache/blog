@@ -1,6 +1,11 @@
 import './LoginModal.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Form, Button } from 'react-bootstrap';
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css';
+
+/**This is my notyf object with all its toasty methods */
+const notyf = new Notyf();
 
 // import { Button, Card, Navbar, Row, Col } from 'react-bootstrap';
 
@@ -21,16 +26,15 @@ export function LoginModal(props) {
     //   }, []);
 
     const handleLogin = async (event) => {
+        event.preventDefault();
         const username = event.target.username.value;
         const password = event.target.password.value;
-        await fetch('/users/login', {
-            method: 'POST',
-            body: {
-                'username': username,
-                'password': password
-            },
-            headers: { 'content-type': 'application/json' },
-        });
+        const res = await fetch(`/users/login?username=${username}&password=${password}`);
+        if (res.ok) {
+            notyf.success('Login Success');
+        } else {
+            notyf.error('Login Failed');
+        }
     };
 
     return (
@@ -56,10 +60,10 @@ export function LoginModal(props) {
                         type="password"
                         name="password"
                     />
-                    <Button variant="success">Login</Button>
+                    <Button type="submit" variant="success">Login</Button>
                     <Button onClick={handleHideLogin} variant="danger">Cancel</Button>
                 </Form>
             </Modal.Body>
         </Modal>
     );
-}
+};
