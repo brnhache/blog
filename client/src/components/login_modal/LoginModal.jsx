@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './LoginModal.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Form, Button } from 'react-bootstrap';
@@ -17,10 +17,6 @@ const notyf = new Notyf();
 export function LoginModal(props) {
     const { showLogin, handleHideLogin } = props;
     const [showCreateAccountForm, setShowCreateAccountForm] = useState(false);
-
-    //   useEffect(() => {
-    //     loadPosts();
-    //   }, []);
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -49,22 +45,21 @@ export function LoginModal(props) {
         setShowCreateAccountForm(true);
     };
 
-    // This does not work!
-    // Can I use a hook to reset the showCreateAccountForm instead of this extra function?
-    const hideLogin = () => {
+    const handleHideCreateAccountForm = () => {
         setShowCreateAccountForm(false);
-        handleHideLogin();
     };
+
+    const title = showCreateAccountForm ? "Create A New Account" : "Login";
 
 
     return (
         <Modal
             show={showLogin}
-            onHide={hideLogin}
+            onHide={handleHideLogin}
             backdrop="static"
         >
             <Modal.Header closeButton={true}>
-                <Modal.Title>{showCreateAccountForm ? "Login" : "Create A New Account"}</Modal.Title>
+                <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {!showCreateAccountForm &&
@@ -82,7 +77,7 @@ export function LoginModal(props) {
                             name="password"
                         />
                         <Button type="submit" variant="success">Login</Button>
-                        <Button onClick={handleHideLogin} variant="danger">Cancel</Button>
+                        <Button onClick={handleHideLogin} variant="danger">Close</Button>
                         <Button className="showCreateAccountFormButton" onClick={handleShowCreateAccountForm} variant="info">Create Account</Button>
                     </Form>
                 }
@@ -113,7 +108,7 @@ export function LoginModal(props) {
                             name="passwordConfirm"
                         />
                         <Button type="submit" variant="success">Create</Button>
-                        <Button onClick={handleHideLogin} variant="danger">Cancel</Button>
+                        <Button onClick={handleHideCreateAccountForm} variant="danger">Cancel</Button>
                     </Form>
                 }
             </Modal.Body>
