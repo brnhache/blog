@@ -48,20 +48,20 @@ export function SavePostModal(props) {
       //At this point...should they just be separated? :(
       const body = selectedPost
         ? {
-            title: event.target.newPostTitle.value,
-            body: event.target.newPostBody.value,
-            image: newImageBase64
-              ? newImageBase64
-              : 'https://picsum.photos/400/150',
-            id: selectedPost.id,
-          }
+          title: event.target.newPostTitle.value,
+          body: event.target.newPostBody.value,
+          image: newImageBase64
+            ? newImageBase64
+            : 'https://picsum.photos/400/150',
+          id: selectedPost.id,
+        }
         : {
-            title: event.target.newPostTitle.value,
-            body: event.target.newPostBody.value,
-            image: newImageBase64
-              ? newImageBase64
-              : 'https://picsum.photos/400/150',
-          };
+          title: event.target.newPostTitle.value,
+          body: event.target.newPostBody.value,
+          image: newImageBase64
+            ? newImageBase64
+            : 'https://picsum.photos/400/150',
+        };
       const route = selectedPost ? '/post/update' : '/post/create';
       const res = await fetch(route, {
         method: selectedPost ? 'PUT' : 'POST',

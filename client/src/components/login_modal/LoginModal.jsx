@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './LoginModal.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Form, Button } from 'react-bootstrap';
@@ -13,13 +14,9 @@ const notyf = new Notyf();
 // import { ViewPostModal } from './components/view_post_modal/ViewPostModal';
 // import { SavePostModal } from './components/save_post_modal/SavePostModal';
 
-/**
- *
- * @returns Main entry point to This is Blog
- */
 export function LoginModal(props) {
     const { showLogin, handleHideLogin } = props;
-
+    const [showCreateAccountForm, setShowCreateAccountForm] = useState(false);
 
     //   useEffect(() => {
     //     loadPosts();
@@ -37,32 +34,88 @@ export function LoginModal(props) {
         }
     };
 
+    const handleCreateAccount = async (event) => {
+        const username = event.target.username.value;
+        const password = event.target.password.value;
+        const res = await fetch(`/users/create?username=${username}&password=${password}`);
+        if (res.ok) {
+            notyf.success('Account Created!');
+        } else {
+            notyf.error('Account Creation Failed');
+        }
+    };
+
+    const handleShowCreateAccountForm = () => {
+        setShowCreateAccountForm(true);
+    };
+
+    // This does not work!
+    // Can I use a hook to reset the showCreateAccountForm instead of this extra function?
+    const hideLogin = () => {
+        setShowCreateAccountForm(false);
+        handleHideLogin();
+    };
+
+
     return (
         <Modal
             show={showLogin}
-            onHide={handleHideLogin}
+            onHide={hideLogin}
             backdrop="static"
         >
             <Modal.Header closeButton={true}>
-                <Modal.Title>Login</Modal.Title>
+                <Modal.Title>{showCreateAccountForm ? "Login" : "Create A New Account"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleLogin}>
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control
-                        className="mb-3"
-                        type="text"
-                        name="username"
-                    />
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        className="mb-3"
-                        type="password"
-                        name="password"
-                    />
-                    <Button type="submit" variant="success">Login</Button>
-                    <Button onClick={handleHideLogin} variant="danger">Cancel</Button>
-                </Form>
+                {!showCreateAccountForm &&
+                    <Form onSubmit={handleLogin}>
+                        <Form.Label>Username</Form.Label>
+                        <Form.Control
+                            className="mb-3"
+                            type="text"
+                            name="username"
+                        />
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                            className="mb-3"
+                            type="password"
+                            name="password"
+                        />
+                        <Button type="submit" variant="success">Login</Button>
+                        <Button onClick={handleHideLogin} variant="danger">Cancel</Button>
+                        <Button className="showCreateAccountFormButton" onClick={handleShowCreateAccountForm} variant="info">Create Account</Button>
+                    </Form>
+                }
+                {showCreateAccountForm &&
+                    <Form onSubmit={handleCreateAccount}>
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                            className="mb-3"
+                            type="email"
+                            name="email"
+                        />
+                        <Form.Label>Username</Form.Label>
+                        <Form.Control
+                            className="mb-3"
+                            type="text"
+                            name="username"
+                        />
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                            className="mb-3"
+                            type="password"
+                            name="password"
+                        />
+                        <Form.Label>Confirm Password</Form.Label>
+                        <Form.Control
+                            className="mb-3"
+                            type="password"
+                            name="passwordConfirm"
+                        />
+                        <Button type="submit" variant="success">Create</Button>
+                        <Button onClick={handleHideLogin} variant="danger">Cancel</Button>
+                    </Form>
+                }
             </Modal.Body>
         </Modal>
     );
